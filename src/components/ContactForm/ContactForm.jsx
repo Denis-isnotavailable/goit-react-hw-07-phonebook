@@ -1,7 +1,10 @@
-import PropTypes from 'prop-types';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import { FormStyled } from "components/ContactForm/Form.styled";
+import { handleMouseDown, handleMouseUp } from "utils/HandleMouse";
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 
 
 const values = {    
@@ -23,10 +26,19 @@ const PhonebookValidationSchema = Yup.object().shape({
 });
 
 
-export const ContactForm = ({ onSubmit, onMouseDown, onMouseUp }) => {
+export const ContactForm = () => {    
+    const dispatch = useDispatch();
+    const contacts = useSelector(getContacts);
     
-    const handleSubmit = (values, { resetForm }) => {        
-        onSubmit(values);
+    const handleSubmit = (values, { resetForm }) => {
+        const { name, number } = values;
+
+        if (!contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())) {
+            dispatch(addContact(name, number));  
+        } else {
+            alert(`${name} is already in contacts`);
+        } 
+        
         resetForm();
     }
 
@@ -51,16 +63,9 @@ export const ContactForm = ({ onSubmit, onMouseDown, onMouseUp }) => {
                         <ErrorMessage name="number" component="span" />
                     </label>
 
-                    <button type="submit" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>Add contact</button>
+                    <button type="submit" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>Add contact</button>
                 </FormStyled>
             </Formik>
             
         )
     }
-
-
-ContactForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-    onMouseDown: PropTypes.func.isRequired,
-    onMouseUp: PropTypes.func.isRequired,
-}
