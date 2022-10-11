@@ -14,6 +14,7 @@ export const FormStyled = styled(Form)`
 
     label {
         display: block;
+        height: 48px;
         /* margin-bottom: ${p => p.theme.space[3]}px;  */
         padding-bottom: ${p => p.theme.space[4]}px;       
         
@@ -31,7 +32,7 @@ export const FormStyled = styled(Form)`
     }
 
     button {
-        margin-top: ${p => p.theme.space[5]}px;
+        margin-top: ${p => p.theme.space[4]}px;
         border-radius: ${p => p.theme.radii[0]}px;
         cursor: pointer;
         margin-left: auto;
