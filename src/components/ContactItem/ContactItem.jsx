@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
+import { AiFillDelete, AiOutlineUser } from "react-icons/ai";
+
 import { useDispatch } from "react-redux";
+import { deleteContact } from "redux/operations";
+
 import { ContactItemStyled } from "components/ContactItem/ContactItem.styled";
 import { handleMouseDown, handleMouseUp } from "utils/HandleMouse";
-import { deleteContact } from 'redux/contactsSlice';
 
 export const ContactItem = ({ id, name, number, }) => {
     const dispatch = useDispatch();
@@ -12,17 +15,18 @@ export const ContactItem = ({ id, name, number, }) => {
     }
 
     return (
-            <ContactItemStyled >
-                {name}: {number}
-                <button type="button"
-                    onClick={() => onDeleteContact(id)}
-                    onMouseDown={handleMouseDown}
-                    onMouseUp={handleMouseUp}
-                >
-                    Delete
-                </button>
-            </ContactItemStyled>
-        );
+        <ContactItemStyled >
+            <AiOutlineUser color="blue" size="24px" />
+            <p>{name}: {number}</p>            
+            <button type="button"
+                onClick={() => onDeleteContact(id)}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+            >
+                <AiFillDelete color="#860202" size="24px" />
+            </button>
+        </ContactItemStyled>
+    );
 }
 
 ContactItem.propTypes = {

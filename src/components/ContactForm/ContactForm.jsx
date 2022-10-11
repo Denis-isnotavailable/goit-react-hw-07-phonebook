@@ -1,10 +1,13 @@
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import { AiOutlineUserAdd } from "react-icons/ai";
+
 import { useDispatch, useSelector } from "react-redux";
+import { selectContacts } from 'redux/selectors';
+import { addContact } from "redux/operations";
+
 import { FormStyled } from "components/ContactForm/Form.styled";
 import { handleMouseDown, handleMouseUp } from "utils/HandleMouse";
-import { addContact } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
 
 
 const values = {    
@@ -28,13 +31,13 @@ const PhonebookValidationSchema = Yup.object().shape({
 
 export const ContactForm = () => {    
     const dispatch = useDispatch();
-    const contacts = useSelector(getContacts);
+    const contacts = useSelector(selectContacts);
     
     const handleSubmit = (values, { resetForm }) => {
-        const { name, number } = values;
+        const { name } = values;
 
         if (!contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())) {
-            dispatch(addContact(name, number));  
+            dispatch(addContact(values));
         } else {
             alert(`${name} is already in contacts`);
         } 
@@ -63,9 +66,14 @@ export const ContactForm = () => {
                         <ErrorMessage name="number" component="span" />
                     </label>
 
-                    <button type="submit" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>Add contact</button>
+                <button
+                    type="submit"
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                >
+                    <AiOutlineUserAdd size="1.2em" /> add contact
+                </button>
                 </FormStyled>
-            </Formik>
-            
+            </Formik>            
         )
     }
