@@ -16,7 +16,7 @@ export const ContactItem = ({ id, name, number, }) => {
 
     return (
         <ContactItemStyled >
-            <AiOutlineUser color="blue" size="24px" />
+            <AiOutlineUser color="#0000ff" size="24px" />
             <p>{name}: {number}</p>            
             <button type="button"
                 onClick={() => onDeleteContact(id)}
