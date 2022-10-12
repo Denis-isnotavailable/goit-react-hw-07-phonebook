@@ -1,9 +1,10 @@
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import { AiOutlineUserAdd } from "react-icons/ai";
+import BarLoader from "react-spinners/BarLoader";
 
 import { useDispatch, useSelector } from "react-redux";
-import { selectContacts } from 'redux/selectors';
+import { selectContacts, selectOperation, selectError } from 'redux/selectors';
 import { addContact } from "redux/operations";
 
 import { FormStyled } from "components/ContactForm/Form.styled";
@@ -31,19 +32,21 @@ const PhonebookValidationSchema = Yup.object().shape({
 
 export const ContactForm = () => {    
     const dispatch = useDispatch();
-    const contacts = useSelector(selectContacts);
+    const contacts = useSelector(selectContacts);    
+    const operation = useSelector(selectOperation);
+    const error = useSelector(selectError);
+    
     
     const handleSubmit = (values, { resetForm }) => {
         const { name } = values;
 
-        if (!contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())) {
-            dispatch(addContact(values));
+        if (!contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase())) {            
+            dispatch(addContact(values));            
+            !error && resetForm();          
         } else {
             alert(`${name} is already in contacts`);
-        } 
-        
-        resetForm();
-    }
+        }        
+    }    
 
     return (
             <Formik initialValues={values} onSubmit={handleSubmit} validationSchema={PhonebookValidationSchema}>
@@ -66,12 +69,14 @@ export const ContactForm = () => {
                         <ErrorMessage name="number" component="span" />
                     </label>
 
+                 
                 <button
                     type="submit"
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
                 >
-                    <AiOutlineUserAdd size="1.2em" /> add contact
+                    {operation === "add" ? <BarLoader color="blue" /> : <><AiOutlineUserAdd size="1.2em" /> add contact</> }
+                     
                 </button>
                 </FormStyled>
             </Formik>            

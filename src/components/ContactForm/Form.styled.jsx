@@ -4,6 +4,7 @@ import { Form } from 'formik';
 export const FormStyled = styled(Form)`
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     padding: ${p => p.theme.space[4]}px ${p => p.theme.space[3]}px;
     border: 1px solid black;
@@ -22,7 +23,7 @@ export const FormStyled = styled(Form)`
 
     input {
         display: block;
-        width: 90%;
+        width: 200px;
         border-radius: 5px;
         
     }
@@ -32,7 +33,7 @@ export const FormStyled = styled(Form)`
     }
 
     button {
-        margin-top: ${p => p.theme.space[4]}px;
+        margin-top: ${p => p.theme.space[4]}px;       
         border-radius: ${p => p.theme.radii[0]}px;
         cursor: pointer;
         margin-left: auto;

@@ -5,14 +5,16 @@ import { ContactItem } from "components/ContactItem/ContactItem";
 
 
 
-export const ContactList = ({ contacts }) => {
+export const ContactList = ({ contacts, }) => {    
+
     return (
         <ContactListStyled>
             {contacts.map(({ id, name, number }) => {
                 return <ContactItem key={id}
                     id={id}
                     name={name}
-                    number={number} />;
+                    number={number}
+                    />;
             })}
         </ContactListStyled> 
         );

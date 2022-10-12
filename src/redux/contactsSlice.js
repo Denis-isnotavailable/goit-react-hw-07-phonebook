@@ -12,13 +12,16 @@ const initialState = {
         contactItems: [],
         isLoading: false,
         error: null,
+        operation: "",
 }
     
-const handlePending = state => {
-  state.isLoading = true;
-};
+// const handlePending = state => {
+//   state.isLoading = true;
+//   // state.operation = "add";
+// };
 const handleRejected = (state, action) => {
   state.isLoading = false;
+  state.operation = "";
   state.error = action.payload;
 };
 
@@ -28,25 +31,40 @@ const contactsSlice = createSlice({
     initialState,
 
     extraReducers: {
-    [fetchContacts.pending]: handlePending,
+      // fetching contacts
+    [fetchContacts.pending](state) {
+        state.isLoading = true;
+        state.operation = "fetch";
+    },
     [fetchContacts.fulfilled](state, action) {
         state.isLoading = false;
+        state.operation = "";
         state.error = null;
         state.contactItems = action.payload;
     },
     [fetchContacts.rejected]: handleRejected,
     
-    [addContact.pending]: handlePending,
+       // adding contact
+      [addContact.pending](state) {
+        state.isLoading = true;
+        state.operation = "add";
+    },
     [addContact.fulfilled](state, action) {
         state.isLoading = false;
+        state.operation = "";
         state.error = null;
         state.contactItems.push(action.payload);
     },
     [addContact.rejected]: handleRejected,
     
-    [deleteContact.pending]: handlePending,
+       // deleting contact
+    [deleteContact.pending](state, action) {
+        state.isLoading = true;
+        state.operation = `${action.meta.arg}`;
+    },
     [deleteContact.fulfilled](state, action) {
         state.isLoading = false;
+        state.operation = "";
         state.error = null;
         const index = state.contactItems.findIndex(contact => contact.id === action.payload);        
         state.contactItems.splice(index, 1);
